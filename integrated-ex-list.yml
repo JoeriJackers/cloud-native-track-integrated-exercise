@@ -27,7 +27,7 @@ items:
       dockerStrategy:
         from:
           kind: ImageStreamTag
-          name: openjdk:8-jre-alpine
+          name: integrated-ex:0.0.1
     triggers:
     - type: ImageChange
     - type: ConfigChange
