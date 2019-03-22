@@ -10,8 +10,8 @@ RUN mvn -Dmaven.test.skip=true package
 FROM openjdk:8-jre-alpine
 
 ENV ENV "DEV"
-COPY --from=builder /opt/target/testApi-0.0.1-SNAPSHOT.jar /opt/
+COPY --from=builder /opt/target/testApi-0.0.1-SNAPSHOT.jar /opt/app.jar
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "/opt/testApi-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "/opt/app.jar"]
