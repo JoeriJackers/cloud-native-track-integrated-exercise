@@ -29,7 +29,6 @@ items:
           kind: ImageStreamTag
           name: integrated-ex:0.0.1
     triggers:
-    - type: ImageChange
     - type: ConfigChange
     - github:
         secret: Password201903
