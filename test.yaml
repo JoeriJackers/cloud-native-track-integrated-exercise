@@ -1,0 +1,115 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: cloud-native-track-integrated-exercise
+    name: cloud-native-track-integrated-exercise
+  spec:
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: cloud-native-track-integrated-exercise:latest
+    postCommit: {}
+    resources: {}
+    source:
+      git:
+        ref: develop
+        uri: https://github.com/JoeriJackers/cloud-native-track-integrated-exercise.git
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: openjdk:8-jre-alpine
+          namespace: integrated-ex-user06
+      type: Docker
+    triggers:
+    - github:
+        secret: m2EJtxrgHLKtBaJM4LOa
+      type: GitHub
+    - generic:
+        secret: dwyZH5jFESvPUwI4M3zr
+      type: Generic
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+  status:
+    lastVersion: 0
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: cloud-native-track-integrated-exercise
+    name: cloud-native-track-integrated-exercise
+  spec:
+    replicas: 1
+    selector:
+      app: cloud-native-track-integrated-exercise
+      deploymentconfig: cloud-native-track-integrated-exercise
+    strategy:
+      resources: {}
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: cloud-native-track-integrated-exercise
+          deploymentconfig: cloud-native-track-integrated-exercise
+      spec:
+        containers:
+        - image: cloud-native-track-integrated-exercise:latest
+          name: cloud-native-track-integrated-exercise
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - cloud-native-track-integrated-exercise
+        from:
+          kind: ImageStreamTag
+          name: cloud-native-track-integrated-exercise:latest
+      type: ImageChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: cloud-native-track-integrated-exercise
+    name: cloud-native-track-integrated-exercise
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: cloud-native-track-integrated-exercise
+      deploymentconfig: cloud-native-track-integrated-exercise
+  status:
+    loadBalancer: {}
+kind: List
+metadata: {}
