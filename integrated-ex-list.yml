@@ -2,6 +2,39 @@ apiVersion: v1
 kind: List
 items:
 - apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: integrated-ex
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    name: integrated-ex
+    labels:
+      app: integrated-ex
+  spec:
+    runPolicy: Serial
+    output:
+      to:
+        kind: ImageStreamTag
+        name: integrated-ex:0.0.1
+    source:
+      git:
+        ref: develop
+        uri: https://github.com/JoeriJackers/cloud-native-track-integrated-exercise.git
+      type: Git
+    strategy:
+      type: Docker
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: openjdk:8-jre-alpine
+    triggers:
+    - type: ImageChange
+    - type: ConfigChange
+    - github:
+        secret: Password201903
+      type: GitHub
+- apiVersion: v1
   kind: DeploymentConfig
   metadata:
     name: integrated-ex
@@ -16,7 +49,7 @@ items:
       spec:
         containers:
           - name: integrated-ex
-            image: docker-registry.default.svc:5000/integrated-ex-user06/cloud-native-track-integrated-exercise
+            image: docker-registry.default.svc:5000/integrated-ex-user06/integrated-ex:0.0.1
             ports: 
             - containerPort: 8080
               protocol: TCP 
